@@ -39,7 +39,7 @@ angle_highness_factor:
       max: 1.0
       min: 0.0
     type: float
-    units: "-"
+    units: ""
 
 angle_asymmetry:
   description: Asymmetry of incoming wave angles
@@ -49,4 +49,4 @@ angle_asymmetry:
       max: 1.0
       min: 0.0
     type: float
-    units: "-"
+    units: ""
