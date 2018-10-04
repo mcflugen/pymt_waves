@@ -1,5 +1,3 @@
----
-_name: Run Parameters
 run_duration:
   description: Simulation run time
   value:
@@ -9,8 +7,6 @@ run_duration:
       min: 1.0
     type: int
     units: d
----
-_name: Wave Parameters
 incoming_wave_height:
   description: Height of incoming waves
   value:
