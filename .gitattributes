@@ -1,1 +1,2 @@
 waves/_version.py export-subst
+pymt_waves/_version.py export-subst

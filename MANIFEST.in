@@ -1,2 +1,3 @@
 include versioneer.py
 include waves/_version.py
+include pymt_waves/_version.py

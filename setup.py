@@ -1,46 +1,52 @@
 #! /usr/bin/env python
-import os, sys
+import os
+import sys
 
-from setuptools import setup, find_packages
-
-# from Cython.Build import cythonize
-from distutils.extension import Extension
 import numpy as np
 import versioneer
+from setuptools import find_packages, setup
 
-from model_metadata.utils import get_cmdclass, get_entry_points
+from distutils.extension import Extension
 
+try:
+    import model_metadata
+except ImportError:
 
-include_dirs = [
-    np.get_include(),
-    os.path.join(sys.prefix, "include"),
-]
+    def get_cmdclass(*args, **kwds):
+        return kwds.get("cmdclass", None)
 
-
-libraries = [
-        "bmi_waves",
-]
-
-
-library_dirs = [
-]
+    def get_entry_points(*args):
+        return None
 
 
-define_macros = [
-]
-
-undef_macros = [
-]
+else:
+    from model_metadata.utils import get_cmdclass, get_entry_points
 
 
-extra_compile_args = [
-]
+import numpy as np
+
+
+include_dirs = [np.get_include(), os.path.join(sys.prefix, "include")]
+
+
+libraries = ["bmi_waves"]
+
+
+library_dirs = []
+
+
+define_macros = []
+
+undef_macros = []
+
+
+extra_compile_args = []
 
 
 ext_modules = [
     Extension(
-        "waves._waves",
-        ["waves/_waves.pyx"],
+        "pymt_waves.lib._bmi",
+        ["pymt_waves/lib/_bmi.pyx"],
         language="c",
         include_dirs=include_dirs,
         libraries=libraries,
@@ -51,19 +57,13 @@ ext_modules = [
     )
 ]
 
-
-packages = find_packages(include=["waves"])
-pymt_components = [
-    (
-        "Waves=waves:Waves",
-        "meta",
-    )
-]
+packages = find_packages()
+pymt_components = [("Waves=pymt_waves.lib:Waves", "meta")]
 
 setup(
-    name="waves",
+    name="pymt_waves",
     author="Eric Hutton",
-    description="Python interface to waves",
+    description="PyMT plugin waves",
     version=versioneer.get_version(),
     setup_requires=["cython"],
     ext_modules=ext_modules,

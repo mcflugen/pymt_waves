@@ -1,10 +1,4 @@
-name: Waves
-
+name: waves
 language: c
-register: register_bmi_waves
-includes:
-  - "#include <waves/bmi_waves.h>"
-cflags:
-  pkgconfig: waves
-libs:
-  pkgconfig: waves
+package: waves
+class: Waves

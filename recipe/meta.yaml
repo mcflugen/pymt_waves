@@ -1,46 +1,47 @@
-{% set name = "pymt_waves" %}
-{% set version = "0.1.1" %}
-{% set build = "0" %}
+{% set data = load_setup_py_data() %}
 
 package:
-  name: {{ name }}
-  version: {{ version }}
+  name: "pymt_waves"
+  version: {{ data.get('version') }}
 
 source:
   path: ..
 
 build:
-  number: {{ build }}
-  script: python -m pip install --no-deps --ignore-installed .
+  number: 0
+  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv"
 
 requirements:
+  build:
+    - {{ compiler('c') }}
   host:
     - python
-    - setuptools
-    - numpy 1.11.*
+    - pip
     - cython
+    - numpy 1.11.*
     - model_metadata
-    - cem
+    - cem 
 
   run:
     - python
-    - setuptools
+    - {{ pin_compatible('numpy') }}
     - pymt
-    - cem
+    - cem 
 
 test:
   requires:
     - bmi-tester
+    - model_metadata
   imports:
     - pymt
-    - waves
+    - pymt_waves
   commands:
-    - mmd-stage Waves .
-    - bmi-test waves:Waves --infile=waves.txt
+    - config_file=$(mmd-stage Waves . > MANIFEST && mmd-query Waves --var=run.config_file.path)
+    - bmi-test pymt_waves.bmi:Waves --infile=$config_file --manifest=MANIFEST -v
 
 about:
-  summary: Python package that wraps the Waves BMI.
+  summary: Python package that wraps the waves BMI.
   home: https://github.com/mcflugen/pymt_waves
-  license: MIT
+  license: MIT license
   license_file: LICENSE
   dev_url: https://github.com/mcflugen/pymt_waves
